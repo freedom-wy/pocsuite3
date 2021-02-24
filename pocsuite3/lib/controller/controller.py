@@ -16,6 +16,7 @@ from pocsuite3.thirdparty.prettytable.prettytable import PrettyTable
 
 
 def runtime_check():
+    print(kb.registered_pocs)
     if not kb.registered_pocs:
         error_msg = "no PoC loaded, please check your PoC file"
         logger.error(error_msg)

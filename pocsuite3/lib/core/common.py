@@ -82,19 +82,28 @@ def set_paths(root_path):
     """
     Sets absolute paths for project directories and files
     """
+    # pocsuite主目录
     paths.POCSUITE_ROOT_PATH = root_path
+    # 数据目录
     paths.POCSUITE_DATA_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "data")
+    # 插件目录
     paths.POCSUITE_PLUGINS_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "plugins")
+    # poc目录
     paths.POCSUITE_POCS_PATH = os.path.join(paths.POCSUITE_ROOT_PATH, "pocs")
     paths.USER_POCS_PATH = None
 
+    # 可以使用其他包代替
     paths.USER_AGENTS = os.path.join(paths.POCSUITE_DATA_PATH, "user-agents.txt")
+    # 弱口令
     paths.WEAK_PASS = os.path.join(paths.POCSUITE_DATA_PATH, "password-top100.txt")
     paths.LARGE_WEAK_PASS = os.path.join(paths.POCSUITE_DATA_PATH, "password-top1000.txt")
 
+    # 家目录
     paths.POCSUITE_HOME_PATH = os.path.expanduser("~")
+    # 在家目录下生成.pocsuite隐藏目录
     _ = os.path.join(paths.POCSUITE_HOME_PATH, ".pocsuite")
 
+    # 保存历史
     paths.API_SHELL_HISTORY = os.path.join(_, "api.hst")
     paths.OS_SHELL_HISTORY = os.path.join(_, "os.hst")
     paths.SQL_SHELL_HISTORY = os.path.join(_, "sql.hst")

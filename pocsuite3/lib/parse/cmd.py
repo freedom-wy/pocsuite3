@@ -16,6 +16,7 @@ def cmd_line_parser(argv=None):
     if not argv:
         argv = sys.argv
 
+    # E:/imooc/pocsuite3/sample/test1.py只获取文件名test1.py
     _ = os.path.basename(argv[0])
     usage = "pocsuite [options]"
     parser = argparse.ArgumentParser(prog='Pocsuite3', usage=usage)

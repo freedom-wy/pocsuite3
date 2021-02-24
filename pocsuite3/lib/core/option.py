@@ -438,6 +438,7 @@ def _cleanup_options():
     conf.origin_socks = None
 
 
+# 未实现的方法，检查账号是否登录等
 def _basic_option_validation():
     _check_account_login()
     _check_seebug()
@@ -617,7 +618,13 @@ def _set_poc_options(input_options):
 
 
 def init_options(input_options=AttribDict(), override_options=False):
+    """
+    :param input_options: 用户输入参数
+    :param override_options:
+    :return:
+    """
     cmd_line_options.update(input_options)
+    # 系统设置参数
     _set_conf_attributes()
     _set_poc_options(input_options)
     _set_kb_attributes()
@@ -652,12 +659,19 @@ def init():
     Set attributes into both configuration and knowledge base singletons
     based upon command line and configuration file options.
     """
+    # 设置日志级别
     set_verbosity()
+    # 日志格式
     _adjust_logging_formatter()
+    # 对输入的参数值进行处理
     _cleanup_options()
+    # 未实现
     _basic_option_validation()
+    # 在set_path方法中指定的路径，在该方法中进行创建
     _create_directory()
+    # 这是在干啥?
     _init_kb_comparison()
+    # 通过命令指定git去更新
     update()
     _set_multiple_targets()
     _set_user_pocs_path()

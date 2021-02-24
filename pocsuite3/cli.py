@@ -43,10 +43,13 @@ def main():
     @function Main function of pocsuite when running from command line.
     """
     try:
+        # 只检查了路径是否非法，如中文字符
         check_environment()
+        # 设置插件，数据，poc路径
         set_paths(module_path())
         banner()
 
+        # 传入命令解析参数
         init_options(cmd_line_parser().__dict__)
 
         data_to_stdout("[*] starting at {0}\n\n".format(time.strftime("%X")))
