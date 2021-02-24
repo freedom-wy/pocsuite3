@@ -70,11 +70,13 @@ class PocLoader(Loader):
         exec(obj, module.__dict__)
 
 
+# 加载poc
 def load_file_to_module(file_path, module_name=None):
     if '' not in importlib.machinery.SOURCE_SUFFIXES:
         importlib.machinery.SOURCE_SUFFIXES.append('')
     try:
         module_name = 'pocs_{0}'.format(get_filename(file_path, with_ext=False)) if module_name is None else module_name
+        # ?
         spec = importlib.util.spec_from_file_location(module_name, file_path, loader=PocLoader(module_name, file_path))
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)

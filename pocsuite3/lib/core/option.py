@@ -209,19 +209,23 @@ def _set_multiple_targets():
     if conf.url:
         targets = set()
         for url in conf.url:
+            # 处理IP或URL
             parsed = parse_target(url)
             if parsed:
                 targets.add(parsed)
+        # 处理后如无URL,log error
         if not targets:
             err_msg = "incorrect target url or ip format!"
             logger.error(err_msg)
         for target in targets:
+            # 加入到kb中
             kb.targets.add(target)
 
     if conf.url_file:
         for line in get_file_items(conf.url_file, lowercase=False, unique=True):
             kb.targets.add(line)
 
+    # 指定插件
     if conf.dork:
         # enable plugin 'target_from_zoomeye' by default
         if 'target_from_shodan' not in conf.plugins and 'target_from_fofa' not in conf.plugins:
@@ -323,9 +327,11 @@ def _set_pocs_modules():
         conf.plugins.append('poc_from_seebug')
     if conf.poc:
         # step1. load system packed poc from pocsuite3/pocs folder
+        # 列出除init之外的python文件
         exists_poc_with_ext = list(
             filter(lambda x: x not in ['__init__.py', '__init__.pyc'], os.listdir(paths.POCSUITE_POCS_PATH)))
         exists_pocs = dict([os.path.splitext(x) for x in exists_poc_with_ext])
+        # 指定poc,可能加载路径可能未加载
         for poc in conf.poc:
             load_poc_sucess = False
             if any([poc in exists_poc_with_ext, poc in exists_pocs]):
@@ -628,6 +634,7 @@ def init_options(input_options=AttribDict(), override_options=False):
     _set_conf_attributes()
     _set_poc_options(input_options)
     _set_kb_attributes()
+    # 合并配置，用户配置和系统配置
     _merge_options(input_options, override_options)
     # if check version
     if conf.show_version:
@@ -663,17 +670,19 @@ def init():
     set_verbosity()
     # 日志格式
     _adjust_logging_formatter()
-    # 对输入的参数值进行处理
+    # 对合并后的参数值进行处理
     _cleanup_options()
     # 未实现
     _basic_option_validation()
     # 在set_path方法中指定的路径，在该方法中进行创建
     _create_directory()
-    # 这是在干啥?
+    # 比较两个搜索引擎?
     _init_kb_comparison()
     # 通过命令指定git去更新
     update()
+    # 处理了URL和插件
     _set_multiple_targets()
+    # 用户自定义POC路径
     _set_user_pocs_path()
     _set_pocs_modules()  # poc module模块要在插件模块前，poc选项中某些参数调用了插件
     _set_plugins()
