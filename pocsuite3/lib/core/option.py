@@ -245,9 +245,11 @@ def _set_multiple_targets():
 
 
 def _set_task_queue():
+    # 加载的Poc和待检测的地址
     if kb.registered_pocs and kb.targets:
         for poc_module in kb.registered_pocs:
             for target in kb.targets:
+                # 放入队列
                 kb.task_queue.put((target, poc_module))
 
 
@@ -334,6 +336,7 @@ def _set_pocs_modules():
         # 指定poc,可能加载路径可能未加载
         for poc in conf.poc:
             load_poc_sucess = False
+            # 未加载路径
             if any([poc in exists_poc_with_ext, poc in exists_pocs]):
                 poc_name, poc_ext = os.path.splitext(poc)
                 if poc_ext in ['.py', '.pyc']:
@@ -397,6 +400,7 @@ def _set_plugins():
         for file in founds:
             debug_msg = "loading plugin script '{0}'".format(file)
             logger.debug(debug_msg)
+            # 加载插件
             load_file_to_module(file)
 
 
@@ -684,13 +688,19 @@ def init():
     _set_multiple_targets()
     # 用户自定义POC路径
     _set_user_pocs_path()
+    # 加载Poc,注册模块poc
     _set_pocs_modules()  # poc module模块要在插件模块前，poc选项中某些参数调用了插件
+    # 加载插件
     _set_plugins()
+    # 加载远程插件
     _init_targets_plugins()
+    # 加载远程poc
     _init_pocs_plugins()
+    # 将对应的目标和POC放入队列
     _set_task_queue()
     _init_results_plugins()
 
+    # 是否定制参数
     if any((conf.url, conf.url_file, conf.plugins)):
         _set_http_cookie()
         _set_http_host()
@@ -699,9 +709,13 @@ def init():
         _set_http_extra_headers()
 
     _set_connect_back()
+    # 设置代理
     _set_network_proxy()
+    # 设置超时时间socket.setdefaulttimeout
     _set_network_timeout()
+    # 设置线程
     _set_threads()
+    # ?
     _set_listener()
     patch_all()
     remove_extra_log_message()

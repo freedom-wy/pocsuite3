@@ -175,6 +175,7 @@ class HtmlReport(PluginBase):
         else:
             title = "Report of [{0}]".format('Plugin imported targets')
         html_export = HtmlExport(filename=filename, title=title)
+        # 写入kb.result的内容
         results = get_results()
         if results:
             results = sorted(results, key=lambda r: r.status, reverse=True)

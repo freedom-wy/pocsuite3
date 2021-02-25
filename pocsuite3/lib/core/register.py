@@ -39,6 +39,7 @@ class PocLoader(Loader):
 
     @staticmethod
     def check_requires(data):
+        # 查找要安装的Python模块
         requires = get_poc_requires(data)
         requires = [i.strip().strip('"').strip("'") for i in requires.split(',')] if requires else ['']
         if requires[0]:
@@ -58,6 +59,7 @@ class PocLoader(Loader):
                     else:
                         __import__(r)
             except ImportError:
+                # 如果导入失败,提示安装模块并退出
                 err_msg = 'try install with "python -m pip install {0}"'.format(r)
                 logger.error(err_msg)
                 raise SystemExit
@@ -65,8 +67,11 @@ class PocLoader(Loader):
     def exec_module(self, module):
         filename = self.get_filename(self.fullname)
         poc_code = self.get_data(filename)
+        # 检查Poc代码
         self.check_requires(poc_code)
+        # 编译
         obj = compile(poc_code, filename, 'exec', dont_inherit=True, optimize=-1)
+        # 执行代码并在POC中register_pocs
         exec(obj, module.__dict__)
 
 
@@ -76,9 +81,9 @@ def load_file_to_module(file_path, module_name=None):
         importlib.machinery.SOURCE_SUFFIXES.append('')
     try:
         module_name = 'pocs_{0}'.format(get_filename(file_path, with_ext=False)) if module_name is None else module_name
-        # ?
         spec = importlib.util.spec_from_file_location(module_name, file_path, loader=PocLoader(module_name, file_path))
         mod = importlib.util.module_from_spec(spec)
+        # 重写了loader的exec_module方法?registered_pocs
         spec.loader.exec_module(mod)
         poc_model = kb.registered_pocs[module_name]
     except KeyError:
