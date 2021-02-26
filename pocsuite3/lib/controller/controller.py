@@ -95,7 +95,7 @@ def task_run():
             poc_module = copy.deepcopy(kb.registered_pocs[poc_module])
         poc_name = poc_module.name
 
-        # for hide some infomations
+        # 打印时隐藏目标信息
         if conf.ppt:
             info_msg = "running poc:'{0}' target '{1}'".format(poc_name, desensitization(target))
         else:
@@ -106,6 +106,7 @@ def task_run():
         # hand user define parameters
         if hasattr(poc_module, "_options"):
             for item in kb.cmd_line:
+                # cmd_line_options用户输入参数
                 value = cmd_line_options.get(item, "")
                 if item in poc_module.options:
                     poc_module.set_option(item, value)
@@ -127,6 +128,7 @@ def task_run():
                     raise SystemExit
 
         try:
+            # 执行POC
             result = poc_module.execute(target, headers=conf.http_headers, mode=conf.mode, verbose=False)
         except PocsuiteValidationException as ex:
             info_msg = "Poc:'{}' PocsuiteValidationException:{}".format(poc_name, ex)

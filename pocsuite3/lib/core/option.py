@@ -249,7 +249,7 @@ def _set_task_queue():
     if kb.registered_pocs and kb.targets:
         for poc_module in kb.registered_pocs:
             for target in kb.targets:
-                # 放入队列
+                # 放入队列,目标和poc名称
                 kb.task_queue.put((target, poc_module))
 
 

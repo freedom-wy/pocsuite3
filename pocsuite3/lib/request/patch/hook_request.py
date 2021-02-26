@@ -34,15 +34,18 @@ def session_request(self, method, url,
 
         return merged_setting
 
-    # Create the Request.
+    # 合并cookie
     merged_cookies = merge_cookies(merge_cookies(RequestsCookieJar(), self.cookies),
                                    cookies or (conf.cookie if 'cookie' in conf else None))
+    # 随机UA
     if conf.random_agent:
         conf.http_headers[HTTP_HEADER.USER_AGENT] = choice(conf.agents)
 
+    # Create the Request.
     req = Request(
         method=method.upper(),
         url=url,
+        # 合并请求头
         headers=_merge_retain_none(headers, conf.http_headers if 'http_headers' in conf else {}),
         files=files,
         data=data or {},
@@ -55,6 +58,7 @@ def session_request(self, method, url,
     prep = self.prepare_request(req)
 
     # proxies = proxies or (conf.proxies if 'proxies' in conf else {})
+    # 用户指定的proxy
     if proxies is None:
        proxies = conf.proxies if 'proxies' in conf else {}
 
@@ -87,4 +91,5 @@ def session_request(self, method, url,
 
 
 def patch_session():
+    # 重写session_request
     Session.request = session_request

@@ -64,4 +64,5 @@ dist/
 *.egg-info
 .eggs/
 pocsuite.ini
-pocsuite3/pocs/
+# pocsuite3/pocs/
+sample/

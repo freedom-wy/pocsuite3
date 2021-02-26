@@ -12,7 +12,9 @@ def patch_all():
     urllib3.response.HTTPResponse._update_chunk_length = _update_chunk_length
     disable_warnings()
     remove_ssl_verify()
+    # 从外部指定或从配置中直接指定到requests源码中
     patch_session()
+    # 请求头
     patch_addraw()
     patch_redirect()
 
