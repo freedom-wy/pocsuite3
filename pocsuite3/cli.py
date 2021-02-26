@@ -30,6 +30,7 @@ def module_path():
 
 def check_environment():
     try:
+        # 判断程序目录
         os.path.isdir(module_path())
     except Exception:
         err_msg = "your system does not properly handle non-ASCII paths. "

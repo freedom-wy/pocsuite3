@@ -609,10 +609,10 @@ def _merge_options(input_options, override_options):
     if hasattr(input_options, "items"):
         input_options_items = input_options.items()
     else:
-        input_options_items = input_options.__dict__.items()
+        input_options_items = input_options.__dict__.items() #dict_items([('show_version', False), ('update_all', False), ('verbose', 2), ('url', ['http://192.168.52.130:8080']), ('url_file', None), ('poc', ['pocs/ecshop_rce.py']), ('configFile', None), ('mode', 'verify'), ('cookie', None), ('host', None), ('referer', None), ('agent', None), ('random_agent', False), ('proxy', None), ('proxy_cred', None), ('timeout', None), ('retry', False), ('delay', None), ('headers', None), ('login_user', None), ('login_pass', None), ('shodan_token', None), ('fofa_user', None), ('fofa_token', None), ('censys_uid', None), ('censys_secret', None), ('dork', None), ('dork_zoomeye', None), ('dork_shodan', None), ('dork_censys', None), ('dork_fofa', None), ('max_page', 1), ('search_type', 'host'), ('vul_keyword', None), ('ssvid', None), ('connect_back_host', None), ('connect_back_port', None), ('comparison', False), ('plugins', None), ('pocs_path', None), ('threads', 1), ('batch', None), ('check_requires', False), ('quiet', False), ('ppt', False)])
 
     for key, value in input_options_items:
-        if key not in conf or value not in (None, False) or override_options:
+        if key not in conf or value not in (None, False) or override_options: #conf AttribDict([('url', None), ('url_file', None), ('mode', 'verify'), ('poc', None), ('cookie', None), ('host', None), ('referer', None), ('agent', None), ('headers', None), ('random_agent', None), ('proxy', None), ('proxy_cred', None), ('proxies', {}), ('timeout', 30), ('retry', 0), ('delay', 0), ('http_headers', {}), ('agents', ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36']), ('login_user', None), ('login_pass', None), ('shodan_token', None), ('fofa_user', None), ('fofa_token', None), ('censys_uid', None), ('censys_secret', None), ('dork', None), ('dork_zoomeye', None), ('dork_shodan', None), ('dork_fofa', None), ('dork_censys', None), ('max_page', 1), ('search_type', 'host'), ('comparison', False), ('vul_keyword', None), ('ssvid', None), ('plugins', []), ('threads', 1), ('batch', False), ('check_requires', False), ('quiet', False), ('update_all', False), ('verbose', 1), ('ipv6', False), ('multiple_targets', False), ('pocs_path', None), ('output_path', None), ('plugin_name', None), ('plugin_code', None), ('connect_back_host', None), ('connect_back_port', 6666), ('console_mode', False), ('show_version', False), ('api', False), ('ppt', False)])
             conf[key] = value
 
     if input_options.get("configFile"):
@@ -622,6 +622,10 @@ def _merge_options(input_options, override_options):
 
 
 def _set_poc_options(input_options):
+    """
+    :param input_options: <class 'dict'>: {'show_version': False, 'update_all': False, 'verbose': 2, 'url': ['http://192.168.52.130:8080'], 'url_file': None, 'poc': ['pocs/ecshop_rce.py'], 'configFile': None, 'mode': 'verify', 'cookie': None, 'host': None, 'referer': None, 'agent': None, 'random_agent': False, 'proxy': None, 'proxy_cred': None, 'timeout': None, 'retry': False, 'delay': None, 'headers': None, 'login_user': None, 'login_pass': None, 'shodan_token': None, 'fofa_user': None, 'fofa_token': None, 'censys_uid': None, 'censys_secret': None, 'dork': None, 'dork_zoomeye': None, 'dork_shodan': None, 'dork_censys': None, 'dork_fofa': None, 'max_page': 1, 'search_type': 'host', 'vul_keyword': None, 'ssvid': None, 'connect_back_host': None, 'connect_back_port': None, 'comparison': False, 'plugins': None, 'pocs_path': None, 'threads': 1, 'batch': None, 'check_requires': False, 'quiet': False, 'ppt': False}
+    :return:
+    """
     for line in input_options.keys():
         if line not in CMD_PARSE_WHITELIST:
             DIY_OPTIONS.append(line)
@@ -629,7 +633,7 @@ def _set_poc_options(input_options):
 
 def init_options(input_options=AttribDict(), override_options=False):
     """
-    :param input_options: 用户输入参数
+    :param input_options: 用户输入参数 <class 'dict'>: {'show_version': False, 'update_all': False, 'verbose': 2, 'url': ['http://192.168.52.130:8080'], 'url_file': None, 'poc': ['pocs/ecshop_rce.py'], 'configFile': None, 'mode': 'verify', 'cookie': None, 'host': None, 'referer': None, 'agent': None, 'random_agent': False, 'proxy': None, 'proxy_cred': None, 'timeout': None, 'retry': False, 'delay': None, 'headers': None, 'login_user': None, 'login_pass': None, 'shodan_token': None, 'fofa_user': None, 'fofa_token': None, 'censys_uid': None, 'censys_secret': None, 'dork': None, 'dork_zoomeye': None, 'dork_shodan': None, 'dork_censys': None, 'dork_fofa': None, 'max_page': 1, 'search_type': 'host', 'vul_keyword': None, 'ssvid': None, 'connect_back_host': None, 'connect_back_port': None, 'comparison': False, 'plugins': None, 'pocs_path': None, 'threads': 1, 'batch': None, 'check_requires': False, 'quiet': False, 'ppt': False}
     :param override_options:
     :return:
     """

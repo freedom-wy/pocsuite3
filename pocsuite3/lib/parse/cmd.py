@@ -14,6 +14,7 @@ def cmd_line_parser(argv=None):
     """
 
     if not argv:
+        # <class 'list'>: ['E:/imooc/pocsuite3/pocsuite3/cli.py', '-u', 'http://192.168.52.130:8080', '-r', 'pocs/ecshop_rce.py', '-v', '2']
         argv = sys.argv
 
     # E:/imooc/pocsuite3/sample/test1.py只获取文件名test1.py

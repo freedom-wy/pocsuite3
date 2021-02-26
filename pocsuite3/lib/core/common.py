@@ -81,6 +81,8 @@ def check_file(filename):
 def set_paths(root_path):
     """
     Sets absolute paths for project directories and files
+    :param root_path: 'E:\\imooc\\pocsuite3\\pocsuite3'
+    :return:
     """
     # pocsuite主目录
     paths.POCSUITE_ROOT_PATH = root_path

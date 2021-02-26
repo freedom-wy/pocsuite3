@@ -70,6 +70,7 @@ class PocLoader(Loader):
         # 检查Poc代码
         self.check_requires(poc_code)
         # 编译
+        print(poc_code, filename)
         obj = compile(poc_code, filename, 'exec', dont_inherit=True, optimize=-1)
         # 执行代码并在POC中register_pocs
         exec(obj, module.__dict__)
@@ -81,9 +82,11 @@ def load_file_to_module(file_path, module_name=None):
         importlib.machinery.SOURCE_SUFFIXES.append('')
     try:
         module_name = 'pocs_{0}'.format(get_filename(file_path, with_ext=False)) if module_name is None else module_name
+        # 导入模块空间,指定名称,传入文件路径
         spec = importlib.util.spec_from_file_location(module_name, file_path, loader=PocLoader(module_name, file_path))
+        # 导入模块
         mod = importlib.util.module_from_spec(spec)
-        # 重写了loader的exec_module方法?registered_pocs
+        # 执行模块,重写了loader的exec_module方法,registered_pocs
         spec.loader.exec_module(mod)
         poc_model = kb.registered_pocs[module_name]
     except KeyError:
